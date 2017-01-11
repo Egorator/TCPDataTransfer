@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //File inputFile = new File(Environment.getExternalStorageDirectory() + "/1.txt");
-                        File inputFile = new File("/storage/sdcard1/123.txt");
+                        File inputFile = new File("/storage/sdcard1/abcd.jpg");
                         boolean exitsts = inputFile.exists();
                         byte[] bytes = new byte[(int) inputFile.length()];
                         try {
