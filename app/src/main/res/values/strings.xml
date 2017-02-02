@@ -3,4 +3,7 @@
     <string name="TextView">Type here dummy!</string>
     <string name="SendMessage">Send message</string>
     <string name="SendFile">Send file</string>
+    <string name="ViewFileNames">View file names</string>
+    <string name="ViewFilesButton">View Files</string>
+    <string name="ViewFiles">View Files</string>
 </resources>
