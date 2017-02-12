@@ -188,6 +188,16 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 os.write(bytes);//writes bytes into stream
 
+                                InputStream is = socket.getInputStream();
+
+                                try {
+                                    int a = is.read();
+                                }
+                                catch(Throwable e) {
+                                }
+
+                                socket.shutdownOutput();
+
                                 //------------------------------------------        //RECIEVE FILE FROM SERVER
                                 /*System.out.println("Client receiving file...");
 
