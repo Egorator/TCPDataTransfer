@@ -1,0 +1,1 @@
+start "my job" javaw -jar D:\Java_Projects\Android_Projects\TCPDataTransfer2\server\out\artifacts\server_jar\server.jar
