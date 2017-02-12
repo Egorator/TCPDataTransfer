@@ -1,11 +1,24 @@
-*.iml
-.gradle
-*/.idea/*
-/local.properties
-.DS_Store
-/build
-/captures
-.externalNativeBuild
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+
+# Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
+
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -16,7 +29,7 @@
 /out/
 
 # mpeltonen/sbt-idea plugin
-*/.idea_modules/
+.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -30,6 +43,7 @@ fabric.properties
 ### PhpStorm Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
+# *.iml
 # modules.xml
-# .idea/misc.xml
+# .idea/misc.xml 
 # *.ipr
