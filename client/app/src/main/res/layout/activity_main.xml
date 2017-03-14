@@ -31,16 +31,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="@string/SendFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
-        android:id="@+id/SendFileButton"
-        android:layout_below="@+id/SendTextButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/SendTextButton" />
-
-    <Button
         android:text="@string/ViewFileNames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,13 +41,33 @@
         android:layout_alignParentEnd="true" />
 
     <Button
+        android:text="@string/SynchronizeFolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/SendFileButton"
+        android:layout_alignStart="@+id/ViewFileNamesButton"
+        android:id="@+id/SynchronizeFolderButton"
+        android:layout_alignEnd="@+id/ViewFileNamesButton"
+        android:layout_alignTop="@+id/SendFileButton" />
+
+    <Button
+        android:text="@string/SendFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="53dp"
+        android:id="@+id/SendFileButton"
+        android:layout_below="@+id/SendTextButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/SendTextButton" />
+
+    <Button
         android:text="Temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:id="@+id/Temp"
         android:layout_below="@+id/SendFileButton"
-        android:layout_alignEnd="@+id/ViewFiles"
-        android:layout_marginEnd="107dp"
-        android:layout_marginTop="60dp"
-        android:id="@+id/Temp" />
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/SendFileButton" />
 
 </RelativeLayout>

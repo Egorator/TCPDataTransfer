@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -41,46 +42,13 @@ public class MainActivity extends AppCompatActivity {
     private final String debugString = "debug";
     private Socket socket = null;
     private int temp = 0; //for ViewFileNamesButton
-    private static final int FILE_SELECT_CODE = 0; //for ViewFilesButton
+    private static final int FILE_SELECT_CODE = 0; //for SendFileButton
+    private static final int FOLDER_SELECT_CODE = 1; //for SynchronizeFolderButton
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-/*        Button SendTextButton = (Button)(findViewById(R.id.SendTextButton));
-        SendTextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            //Connecting
-                            Log.i(debugString, "ATTEMPTING TO CONNECT TO SERVER");
-                            socket = new Socket(hostname, portnumber);
-                            Log.i(debugString, "CONNECTION ESTABLISHED");
-
-                            // send message to server
-                            EditText editText = (EditText)(findViewById(R.id.editText));
-                            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                            bw.write(editText.getText().toString());
-                            bw.newLine();
-                            bw.flush();
-
-                            //receive message from server
-                            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                            System.out.println("Message from server: " + br.readLine());
-                        }
-                        catch (IOException e) {
-                            Log.e(debugString, e.getMessage());
-                        }
-                    }
-                }.start();
-            }
-        });*/
-
-
 
         Button SendFileButton = (Button)(findViewById(R.id.SendFileButton));
         SendFileButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +108,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button SynchronizeFolderButton = (Button)(findViewById(R.id.SynchronizeFolderButton));
+        SynchronizeFolderButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
+                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FOLDER_SELECT_CODE);
+            }
+        });
     }
 
 
@@ -158,101 +136,23 @@ public class MainActivity extends AppCompatActivity {
                     // Get the path
                     final String realPath = getRealPathFromURI(this, uri);
                     System.out.println("Real path: " + realPath);
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            //File outputFile = new File(Environment.getExternalStorageDirectory() + "/1.txt"); //TODO why doesn't work?
-                            File outputFile = new File(realPath); // /storage/sdcard1/123.txt
-                            boolean temp = outputFile.exists();
-                            byte[] bytes = new byte[(int) outputFile.length()];
-                            try {
-                                socket = new Socket(hostname, portnumber);
-                                String fileName = outputFile.getName();
-                                long fileSize = outputFile.length();
-                                OutputStream os = socket.getOutputStream();//tcp stream
-                                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
-                                bw.write(fileName);
-                                bw.newLine();
-                                bw.flush();
-
-                                ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-                                buffer.putLong(fileSize);
-                                os.write(buffer.array());
-
-                                FileInputStream fis = new FileInputStream(outputFile);//new stream to read FROM file
-                                int numBytesRead = fis.read(bytes);//reads from file byte by byte to byreArray
-                                if (numBytesRead != fileSize) {
-                                    System.out.println("Wrong number of bytes has been read");
-                                    exit(1);
-                                }
-                                os.write(bytes);//writes bytes into stream
-
-                                InputStream is = socket.getInputStream();
-
-                                try {
-                                    int a = is.read();
-                                }
-                                catch(Throwable e) {
-                                }
-
-                                socket.shutdownOutput();
-
-                                //------------------------------------------        //RECIEVE FILE FROM SERVER
-                                /*System.out.println("Client receiving file...");
-
-                                InputStream is = socket.getInputStream();
-                                BufferedReader br = new BufferedReader((new InputStreamReader(is)));
-                                String iFilePath = "/storage/sdcard1/" + br.readLine(); // /storage/sdcard1/
-                                File inputFile = new File(iFilePath);
-                                //File file = new File(context.getFilesDir(), filename);
-                                System.out.println(iFilePath);
-
-                                byte[] iFileSizeBytes = new byte[Long.BYTES];
-                                int iNumBytesRead = is.read(iFileSizeBytes, 0, Long.BYTES);
-                                if (iNumBytesRead != Long.BYTES) {
-                                    System.out.println("Wrong number of bytes has been received");
-                                    System.exit(1);
-                                }
-
-                                ByteBuffer iBuffer = ByteBuffer.allocate(Long.BYTES);
-                                iBuffer.put(iFileSizeBytes);
-                                iBuffer.flip();
-                                long iFileSize = iBuffer.getLong();
-                                System.out.println(iFileSize);
-
-                                int iBytesAlreadyRead = 0;
-                                iNumBytesRead = 0;
-                                byte[] iFileData = new byte[(int) iFileSize];
-                                //inputFile.createNewFile();
-                                boolean fileExsists = inputFile.exists();
-                                FileOutputStream fos = new FileOutputStream(inputFile);
-                            *//*String iFileName = iFilePath.substring(17);
-                            FileOutputStream fos = openFileOutput(iFileName, MODE_APPEND);*//*
-                                while (iBytesAlreadyRead != iFileSize) {
-                                    iNumBytesRead += is.read(iFileData, iBytesAlreadyRead, (int) iFileSize - iBytesAlreadyRead);
-                                    iBytesAlreadyRead = iNumBytesRead;
-                                }
-                                fos.write(iFileData);//writes from byteArray into fos
-                                System.out.print("Client received file");*/
-
-                                fis.close();
-                                bw.close();
-                                os.close();
-
-                                /*fos.close();
-                                br.close();
-                                is.close();*/
-
-                                socket.close();
-                            }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
+                    sendFilePackets(realPath);
                 }
                 break;
+            case FOLDER_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    System.out.println("File Uti: " + uri.toString());
+                    // Get the path
+                    final String realPath = getRealPathFromURI(this, uri);
+                    File directory = new File(new File(realPath).getParent());
+
+                    File[] files = directory.listFiles();
+                    for (File f : files) {
+                        sendFilePackets(f.toString());
+                    }
+                }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -272,5 +172,85 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+    }
+
+    private void sendFilePackets(final String realPath) {
+        new Thread() {
+            @Override
+            public void run() {
+                //File outputFile = new File(Environment.getExternalStorageDirectory() + "/1.txt"); //TODO why doesn't work?
+                File outputFile = new File(realPath); // /storage/sdcard1/123.txt
+                boolean temp = outputFile.exists();
+                byte[] bytes = new byte[(int) outputFile.length()];
+                try {
+                    socket = new Socket(hostname, portnumber);
+
+                    String fileName = outputFile.getName();
+                    byte[] fileNameBytes = fileName.getBytes();
+
+                    Byte[] fileNameBytesWrapper = new Byte[fileNameBytes.length]; // TODO check if works :
+                    int i = 0;
+                    for (byte b: fileNameBytes)
+                        fileNameBytesWrapper[i++] = b; // TODO .
+
+                    Long fileSize = outputFile.length(); // TODO check new variable type
+                    OutputStream os = socket.getOutputStream();//tcp stream
+                    writeSizeToStream(os, null, fileNameBytesWrapper);
+                    os.write(fileNameBytes);
+
+                    /*BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
+                    bw.write(fileName);
+                    bw.newLine();
+                    bw.flush();*/
+
+                    // void writeSizeToStream(InputStream stream, long size); // convert size to 8 bytes array and write it to stream.
+
+                    // void writeStringToStream(InputStream stream, String string); // write 8 bytes long string size to stream. Afterwards write bytes from string.
+
+                    writeSizeToStream(os, fileSize, null);
+
+
+                    FileInputStream fis = new FileInputStream(outputFile);//new stream to read FROM file
+                    int numBytesRead = fis.read(bytes);//reads from file byte by byte to byreArray
+                    if (numBytesRead != fileSize) {
+                        System.out.println("Wrong number of bytes has been read");
+                        exit(1);
+                    }
+                    os.write(bytes);//writes bytes into stream
+                    os.flush();
+
+                    InputStream is = socket.getInputStream();
+
+                    try {
+                        int a = is.read();
+                    }
+                    catch(Throwable e) {
+                    }
+
+                    socket.shutdownOutput();
+
+                    fis.close();
+                    os.close();
+
+                    socket.close();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    void writeSizeToStream(OutputStream stream, Long size, Byte[] fileNameBytesWrapper) throws IOException {
+        ByteBuffer sizeBuffer = ByteBuffer.allocate(Long.BYTES);
+        if (size == null) {
+            sizeBuffer.putLong(fileNameBytesWrapper.length);
+            stream.write(sizeBuffer.array());
+        }
+        else if (fileNameBytesWrapper == null) {
+            sizeBuffer.putLong(size);
+            stream.write(sizeBuffer.array());
+        }
+        sizeBuffer.clear();//TODO new code.
     }
 }
