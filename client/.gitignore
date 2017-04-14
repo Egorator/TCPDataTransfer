@@ -1,38 +1,11 @@
 *.iml
 .gradle
+/.idea/*
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-
-
-
-
-
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
-
-# Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-
-# Gradle:
-.idea/gradle.xml
-.idea/libraries
-
-# Mongo Explorer plugin:
-.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -41,9 +14,6 @@
 
 # IntelliJ
 /out/
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -59,5 +29,4 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# .idea/misc.xml 
 # *.ipr
