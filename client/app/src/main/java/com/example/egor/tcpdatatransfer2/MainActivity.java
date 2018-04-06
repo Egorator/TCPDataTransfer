@@ -34,16 +34,29 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 
+
+import net.rdrei.android.dirchooser.DirectoryChooserActivity;
+import net.rdrei.android.dirchooser.DirectoryChooserConfig;
+
+import android.widget.TextView;
+
+import static android.app.Activity.RESULT_OK;
 import static java.lang.System.exit;
 
 public class MainActivity extends AppCompatActivity {
     private static final int portnumber = 60123;
-    private static final String hostname = "192.168.1.2";
+    private static final String hostname = "192.168.0.103"; //"192.168.0.103"; //"192.168.2.70";
     private final String debugString = "debug";
     private Socket socket = null;
     private int temp = 0; //for ViewFileNamesButton
     private static final int FILE_SELECT_CODE = 0; //for SendFileButton
-    private static final int FOLDER_SELECT_CODE = 1; //for SynchronizeFolderButton
+    private static final int FOLDER_SELECT_CODE_OLD = 1; //for SynchronizeFolderButton [OUTDATED]
+    private static final int FOLDER_SELECT_CODE = 2; //for SynchronizeFolderButton [NEW]
+
+    //new vars for DitChooser
+    private static final int REQUEST_DIRECTORY = 0;
+    private static final String TAG = "DirChooserSample";
+    private TextView mDirectoryTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,14 +121,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
         Button SynchronizeFolderButton = (Button)(findViewById(R.id.SynchronizeFolderButton));
         SynchronizeFolderButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file/*");
-                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FOLDER_SELECT_CODE);
+/*                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("file*//*");
+                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FOLDER_SELECT_CODE_OLD);*/
+
+                mDirectoryTextView = (TextView) findViewById(R.id.textDirectory);
+
+                final Intent chooserIntent = new Intent(
+                        MainActivity.this,
+                        DirectoryChooserActivity.class);
+
+                final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
+                        .newDirectoryName("DirChooserSample")
+                        .allowReadOnlyDirectory(true)
+                        .allowNewDirectoryNameModification(true)
+                        .build();
+
+                chooserIntent.putExtra(
+                        DirectoryChooserActivity.EXTRA_CONFIG,
+                        config);
+
+                startActivityForResult(chooserIntent, FOLDER_SELECT_CODE);
             }
         });
     }
@@ -139,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     sendFilePackets(realPath);
                 }
                 break;
-            case FOLDER_SELECT_CODE:
+            case FOLDER_SELECT_CODE_OLD:
                 if (resultCode == RESULT_OK) {
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
@@ -151,6 +185,20 @@ public class MainActivity extends AppCompatActivity {
                     File[] files = directory.listFiles();
                     for (File f : files) {
                         sendFilePackets(f.toString());
+                    }
+                }
+                break;
+            case FOLDER_SELECT_CODE:
+                if (requestCode == REQUEST_DIRECTORY) {
+                    Log.i(TAG, String.format("Return from DirChooser with result %d",
+                            resultCode));
+
+                    if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+                        mDirectoryTextView
+                                .setText(data
+                                        .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR));
+                    } else {
+                        mDirectoryTextView.setText("nothing selected");
                     }
                 }
         }

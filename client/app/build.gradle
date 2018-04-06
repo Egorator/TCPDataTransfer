@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.example.egor.tcpdatatransfer2"
         minSdkVersion 19
@@ -17,14 +17,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-  lintOptions {
-    // use this line to check all rules except those listed
-    // disable 'RuleToDisable', 'SecondRuleToDisable'
-    disable 'ProtectedPermissions'
-    // use this line to check just listed rules
-    // enable 'FirstRuleToCheck', 'LastRuleToCheck'
-  }
+    lintOptions {
+        // use this line to check all rules except those listed
+        // disable 'RuleToDisable', 'SecondRuleToDisable'
+        disable 'ProtectedPermissions'
+        // use this line to check just listed rules
+        // enable 'FirstRuleToCheck', 'LastRuleToCheck'
+    }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -34,4 +35,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
+    compile files('D:/Java_Projects/Android_Projects/TCPDataTransfer2/client/classes.jar')
 }

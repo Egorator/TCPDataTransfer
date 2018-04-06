@@ -81,8 +81,8 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //}
-    }
+        }
+    //}
 
     private static long readSizeFromStream(InputStream stream) {  //TODO why should is be static?
         ByteBuffer sizeBuffer = ByteBuffer.allocate(Long.BYTES);
