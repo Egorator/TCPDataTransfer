@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.egor.tcpdatatransfer2.MainActivity">
 
-    <EditText
+<!--    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
@@ -19,18 +19,18 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textAlignment="center" />
+        android:textAlignment="center" />-->
 
-    <Button
+<!--    <Button
         android:text="@string/SendMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:id="@+id/SendTextButton"
         android:layout_below="@+id/editText"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" />-->
 
-    <Button
+<!--    <Button
         android:text="@string/ViewFileNames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,38 +38,47 @@
         android:layout_marginEnd="46dp"
         android:layout_alignBaseline="@+id/SendTextButton"
         android:layout_alignBottom="@+id/SendTextButton"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true" />-->
 
     <Button
-        android:text="@string/SynchronizeFolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/SendFileButton"
-        android:layout_alignStart="@+id/ViewFileNamesButton"
         android:id="@+id/SynchronizeFolderButton"
-        android:layout_alignEnd="@+id/ViewFileNamesButton"
-        android:layout_alignTop="@+id/SendFileButton" />
-
-    <Button
-        android:text="@string/SendFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="53dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="161dp"
+        android:text="@string/SynchronizeFolder" />
+
+    <Button
         android:id="@+id/SendFileButton"
-        android:layout_below="@+id/SendTextButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/SendTextButton" />
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="87dp"
+        android:text="@string/SendFile" />
 
     <Button
-        android:text="Temp"
+        android:id="@+id/Temp"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="186dp"
+        android:text="Temp" />
+
+    <EditText
+        android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:id="@+id/Temp"
-        android:layout_below="@+id/SendFileButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/SendFileButton" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Enter your computer's ip" />
 
+    <!--TODO unused?:-->
     <TextView
         android:id="@+id/textDirectory"
         android:layout_width="wrap_content"

@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button ViewFileNamesButton = (Button)(findViewById(R.id.ViewFileNamesButton));
+/*        Button ViewFileNamesButton = (Button)(findViewById(R.id.ViewFileNamesButton));
         ViewFileNamesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 editText.setText(files[temp].getName());
                 temp++;
             }
-        });
+        });*/
 
         Button Temp = (Button)(findViewById(R.id.Temp));
         Temp.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setType("file*//*");
                 startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FOLDER_SELECT_CODE_OLD);*/
 
+                // TODO what is textDirectory for?
                 mDirectoryTextView = (TextView) findViewById(R.id.textDirectory);
 
                 final Intent chooserIntent = new Intent(
