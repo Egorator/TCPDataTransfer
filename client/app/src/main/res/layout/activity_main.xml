@@ -42,6 +42,7 @@
 
     <Button
         android:id="@+id/SynchronizeFolderButton"
+        style="@android:style/Widget.Material.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,40 +52,36 @@
 
     <Button
         android:id="@+id/SendFileButton"
+        style="@android:style/Widget.Material.Button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp"
+        android:layout_marginTop="50dp"
         android:text="@string/SendFile" />
 
-    <Button
+<!--    <Button
         android:id="@+id/Temp"
+        style="@android:style/Widget.Material.Button"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="186dp"
-        android:text="Temp" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Enter your computer's ip" />
+        android:text="Temp" />-->
 
     <!--TODO unused?:-->
     <TextView
         android:id="@+id/textDirectory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="153dp"
+        android:layout_height="13dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="-65dp"
+        android:layout_toStartOf="@+id/SynchronizeFolderButton"
         android:fontFamily="monospace"
         android:text=""
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute"
+        tools:text="forTest" />
 
 </RelativeLayout>

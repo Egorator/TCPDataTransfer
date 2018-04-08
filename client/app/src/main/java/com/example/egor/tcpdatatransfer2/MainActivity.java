@@ -58,12 +58,19 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "DirChooserSample";
     private TextView mDirectoryTextView;
 
+
+    // TODO final, but can be changed! ok?
+    //final EditText editText = (EditText)(findViewById(R.id.editText));
+
+    Button SendFileButton = (Button)(findViewById(R.id.SendFileButton));
+    Button SynchronizeFolderButton = (Button)(findViewById(R.id.SynchronizeFolderButton));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button SendFileButton = (Button)(findViewById(R.id.SendFileButton));
+        // TODO onClick inside of onCreate? Try to rework
         SendFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        Button Temp = (Button)(findViewById(R.id.Temp));
+/*        Button Temp = (Button)(findViewById(R.id.Temp));
         Temp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 bytes[2] = 'l';
                 bytes[3] = 'l';
                 bytes[4] = 'o';
-                EditText editText = (EditText)(findViewById(R.id.editText));
                 int temp = 0;
                 boolean fileExists = outputFile.exists();
                 boolean temp1 = outputFile.canWrite();
@@ -119,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
                 if (temp == 0)
                     editText.setText("SUCCESS, YAY ^-^");
             }
-        });
+        });*/
 
 
 
 
 
-        Button SynchronizeFolderButton = (Button)(findViewById(R.id.SynchronizeFolderButton));
+        // TODO onClick inside of onCreate? Try to rework
         SynchronizeFolderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean temp = outputFile.exists();
                 byte[] bytes = new byte[(int) outputFile.length()];
                 try {
+                    //EditText editText = (EditText)(findViewById(R.id.editText));
                     socket = new Socket(hostname, portnumber);
 
                     String fileName = outputFile.getName();
