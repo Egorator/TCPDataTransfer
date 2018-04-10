@@ -48,6 +48,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="161dp"
+        android:onClick="synchronizeFolderButtonClick"
         android:text="@string/SynchronizeFolder" />
 
     <Button
@@ -58,6 +59,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
+        android:onClick="sendFileButtonClick"
         android:text="@string/SendFile" />
 
 <!--    <Button

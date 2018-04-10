@@ -7,4 +7,7 @@
     <string name="ViewFilesButton">View Files</string>
     <string name="ViewFiles">View Files</string>
     <string name="SynchronizeFolder">Synchronize folder</string>
+    <string name="use_previous_ip">Use previous ip</string>
+    <string name="proceed">Proceed</string>
+    <string name="enter_your_server_ip">Enter your server ip</string>
 </resources>
