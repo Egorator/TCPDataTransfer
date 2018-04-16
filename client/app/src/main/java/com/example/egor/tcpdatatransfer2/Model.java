@@ -3,15 +3,25 @@ package com.example.egor.tcpdatatransfer2;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 
+import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.LineNumberReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +35,20 @@ public final class Model {
     private Socket socket = null;
     private static final int portnumber = 60123;
 
+    private java.io.File outputFile = new java.io.File(Environment
+            .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            + "/app_settings.txt");
+
     private Model() {}
 
     public static synchronized Model getModelInstance() {
         if (modelInstance == null)
             modelInstance = new Model();
         return modelInstance;
+    }
+
+    public File getOutputFile() {
+        return outputFile;
     }
 
     // TODO check access modifier for all methods!!!
@@ -41,9 +59,7 @@ public final class Model {
             cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-
-            return path;
+            return cursor.getString(column_index);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -103,7 +119,7 @@ public final class Model {
                     try {
                         int a = is.read();
                     }
-                    catch(Throwable e) {
+                    catch(Throwable ignored) {
                     }
 
                     socket.shutdownOutput();
@@ -120,7 +136,7 @@ public final class Model {
         }.start();
     }
 
-    public void writeSizeToStream(OutputStream stream, Long size, Byte[] fileNameBytesWrapper) throws IOException {
+    private void writeSizeToStream(OutputStream stream, Long size, Byte[] fileNameBytesWrapper) throws IOException {
         ByteBuffer sizeBuffer = ByteBuffer.allocate(Long.BYTES);
         if (size == null) {
             sizeBuffer.putLong(fileNameBytesWrapper.length);
@@ -138,5 +154,65 @@ public final class Model {
         Pattern p = Pattern.compile("(^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3})(?=([0-9]{1,3}$))");
         Matcher m = p.matcher(userInput);
         return m.lookingAt();
+    }
+
+    public void writeIPToFile(String nextIP) {
+        boolean fileExists = outputFile.exists();
+        boolean temp1 = outputFile.canWrite();
+        boolean temp2 = outputFile.canRead();
+
+        try {
+            List<String> fileContents = getFileContents(outputFile);
+            FileWriter fw = new FileWriter(outputFile);
+            for(String str : fileContents) {
+                fw.write(str);
+                fw.append("\n");
+            }
+            fw.append(nextIP);
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getIPCount() { // TODO can replace using getFileContents() ?
+        int linenumber = 0;
+        try {
+            FileReader fr = new FileReader(outputFile);
+            LineNumberReader lnr = new LineNumberReader(fr);
+            while (lnr.readLine() != null)
+                linenumber++;
+            lnr.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        return linenumber;
+    }
+
+    public boolean uniqueIP(String userInput) {
+        return true;
+    }
+
+    public List<String> getFileContents(java.io.File curFile) {
+        List<String> fileContentsList = new ArrayList<>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(curFile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                fileContentsList.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return fileContentsList;
     }
 }

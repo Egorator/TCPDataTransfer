@@ -13,11 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/enter_your_server_ip"
         android:inputType="text|number|numberDecimal"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,20 +28,37 @@
         android:id="@+id/proceedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:onClick="proceedButtonClick"
         android:text="@string/proceed"
+        app:layout_constraintBottom_toBottomOf="@+id/usePreviousIPButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ipEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/ipEditText"
+        app:layout_constraintVertical_bias="0.018" />
 
     <Button
-        android:id="@+id/useOldIPButton"
+        android:id="@+id/usePreviousIPButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="324dp"
+        android:onClick="usePreviousIPButtonClick"
         android:text="@string/use_previous_ip"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usePreviousIPButton" />
+
 </android.support.constraint.ConstraintLayout>
