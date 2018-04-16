@@ -20,7 +20,7 @@ public class ChooseIPActivity extends AppCompatActivity {
     private final String debugString = "debug"; // TODO wtf?
     private int temp = 0; //for ViewFileNamesButton
     // TODO wtf, no other way? Useless conventionality:
-    private static final int FILE_SELECT_CODE = 0; //for SendFileButton
+    private static final int FILE_SELECT_CODE = 0; // for SendFileButton
     private String userInput;
     private boolean usePreviousIPButtonClicked = false;
 
@@ -29,7 +29,6 @@ public class ChooseIPActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_ip);
 
-        //radioGroup = new RadioGroup(this);
         ipEditText = (EditText)(findViewById(R.id.ipEditText));
         // TODO strange realization, rework:
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
@@ -40,12 +39,6 @@ public class ChooseIPActivity extends AppCompatActivity {
                 ipEditText.setText(checkedButton.getText());
             }
         });
-
-        for (String curRadioButtonText : model.getFileContents(model.getOutputFile())) {
-            RadioButton curButton = new RadioButton(this);
-            curButton.setText(curRadioButtonText);
-            radioGroup.addView(curButton);
-        }
     }
 
     // TODO !!! to work properly disable windows firewall on private network !!!
@@ -67,7 +60,12 @@ public class ChooseIPActivity extends AppCompatActivity {
     public void usePreviousIPButtonClick(View view) {
         if (!usePreviousIPButtonClicked) {
             usePreviousIPButtonClicked = true;
-            ((ViewGroup) findViewById(R.id.radiogroup)).addView(radioGroup);
+            // TODO code repetition!:
+            for (String curRadioButtonText : model.getFileContents(model.getOutputFile())) {
+                RadioButton curButton = new RadioButton(this);
+                curButton.setText(curRadioButtonText);
+                radioGroup.addView(curButton);
+            }
         }
     }
 
