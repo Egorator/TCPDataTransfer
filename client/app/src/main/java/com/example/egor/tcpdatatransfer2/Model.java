@@ -190,6 +190,11 @@ public final class Model {
     }
 
     public boolean uniqueIP(String userInput) {
+        // TODO use getOutputFile() or just outputFile?:
+        for (String curRadioButtonText : getFileContents(getOutputFile())) {
+            if (userInput.equals(curRadioButtonText))
+                return false;
+        }
         return true;
     }
 

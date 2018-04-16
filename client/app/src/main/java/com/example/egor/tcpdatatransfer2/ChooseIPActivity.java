@@ -46,12 +46,11 @@ public class ChooseIPActivity extends AppCompatActivity {
 
         userInput = String.valueOf(ipEditText.getText());
         if (model.checkUserInputIp(userInput)) {
-            if (model.uniqueIP(userInput)) {
+            if (model.uniqueIP(userInput))
                 model.writeIPToFile(userInput); // NOTE!!! this string needs to be before others!
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
-            }
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
         }
         else
             ipEditText.setText(R.string.Wrong_input_please_retry);
