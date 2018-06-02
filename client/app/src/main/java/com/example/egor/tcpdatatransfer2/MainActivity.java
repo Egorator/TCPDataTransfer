@@ -35,8 +35,10 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 
 
+/*
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import net.rdrei.android.dirchooser.DirectoryChooserConfig;
+*/
 
 import android.widget.TextView;
 
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO what is textDirectory for?
         mDirectoryTextView = (TextView) findViewById(R.id.textDirectory);
 
+        /*
         final Intent chooserIntent = new Intent(
                 MainActivity.this,
                 DirectoryChooserActivity.class);
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 config);
 
         startActivityForResult(chooserIntent, FOLDER_SELECT_CODE);
+        */
     }
 
     @Override
@@ -164,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, String.format("Return from DirChooser with result %d",
                             resultCode));
 
+		    /*
                     if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
                         mDirectoryTextView
                                 .setText(data
@@ -171,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         mDirectoryTextView.setText("nothing selected");
                     }
+		    */
                 }
         }
         super.onActivityResult(requestCode, resultCode, data);
