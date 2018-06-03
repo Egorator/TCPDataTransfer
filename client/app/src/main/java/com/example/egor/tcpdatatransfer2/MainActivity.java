@@ -35,8 +35,8 @@ import java.net.Socket;
 import java.nio.ByteBuffer;
 
 
-/*
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
+/*
 import net.rdrei.android.dirchooser.DirectoryChooserConfig;
 */
 

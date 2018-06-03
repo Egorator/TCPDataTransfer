@@ -35,6 +35,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:25.0.1'
+    implementation 'net.rdrei.android.dirchooser:library:3.2@aar'
     testImplementation 'junit:junit:4.12'
     // compile files('client/classes.jar')
 }
