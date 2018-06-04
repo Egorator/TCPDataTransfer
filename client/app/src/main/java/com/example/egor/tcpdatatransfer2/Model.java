@@ -220,4 +220,8 @@ public final class Model {
         }
         return fileContentsList;
     }
+
+    public String handleDirectoryChoice(String inputString) {
+        return inputString;
+    }
 }

@@ -36,9 +36,7 @@ import java.nio.ByteBuffer;
 
 
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
-/*
 import net.rdrei.android.dirchooser.DirectoryChooserConfig;
-*/
 
 import android.widget.TextView;
 
@@ -117,68 +115,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void synchronizeFolderButtonClick(View view) {
-              Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("file");
-                startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FOLDER_SELECT_CODE_OLD);
-
-        // TODO what is textDirectory for?
-        mDirectoryTextView = (TextView) findViewById(R.id.textDirectory);
-
-        /*
-        final Intent chooserIntent = new Intent(
-                MainActivity.this,
-                DirectoryChooserActivity.class);
+        final Intent chooserIntent = new Intent(this, DirectoryChooserActivity.class);
 
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
-                .newDirectoryName("DirChooserSample")
-                .allowReadOnlyDirectory(true)
+                .newDirectoryName("DialogSample")
                 .allowNewDirectoryNameModification(true)
+                .allowReadOnlyDirectory(true)
+                .initialDirectory(Environment.getExternalStorageDirectory().getPath())
                 .build();
 
-        chooserIntent.putExtra(
-                DirectoryChooserActivity.EXTRA_CONFIG,
-                config);
+        chooserIntent.putExtra(DirectoryChooserActivity.EXTRA_CONFIG, config);
 
-        startActivityForResult(chooserIntent, FOLDER_SELECT_CODE);
-        */
+        // REQUEST_DIRECTORY is a constant integer to identify the request, e.g. 0
+        startActivityForResult(chooserIntent, REQUEST_DIRECTORY);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FOLDER_SELECT_CODE_OLD:
-                if (resultCode == RESULT_OK) {
-                    // Get the Uri of the selected file
-                    Uri uri = data.getData();
-                    System.out.println("File Uti: " + uri.toString());
-                    // Get the path
-                    final String realPath = model.getRealPathFromURI(this, uri);
-                    File directory = new File(new File(realPath).getParent());
-
-                    File[] files = directory.listFiles();
-                    for (File f : files) {
-                        // TODO remove hardcode!!!:
-                        model.sendFilePackets(f.toString(), "192.168.0.103");
-                    }
-                }
-                break;
-            case FOLDER_SELECT_CODE:
-                // TODO wtf, why says this condition is always false???:
-                if (requestCode == REQUEST_DIRECTORY) {
-                    Log.i(TAG, String.format("Return from DirChooser with result %d",
-                            resultCode));
-
-		    /*
-                    if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-                        mDirectoryTextView
-                                .setText(data
-                                        .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR));
-                    } else {
-                        mDirectoryTextView.setText("nothing selected");
-                    }
-		    */
-                }
-        }
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_DIRECTORY) {
+            if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+                String a = model.handleDirectoryChoice(data
+                        .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR));
+            } else {
+                // Nothing selected
+            }
+        }
     }
 }
