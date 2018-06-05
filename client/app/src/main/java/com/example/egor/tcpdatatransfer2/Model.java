@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.os.AsyncTask;
 
 import static java.lang.System.exit;
 
 // TODO singleton, check if using model instances in other classes is ok
-public final class Model {
+public final class Model extends AsyncTask<String, String, Void> {
 
     private static Model modelInstance;
 
@@ -40,6 +41,73 @@ public final class Model {
             + "/app_settings.txt");
 
     private Model() {}
+
+    @Override
+    protected Void doInBackground(String... strings) {
+        String realPath = strings[0];
+        String hostname = strings[1];
+        //File outputFile = new File(Environment.getExternalStorageDirectory() + "/1.txt"); //TODO why doesn't work?
+        File outputFile = new File(realPath); // /storage/sdcard1/123.txt
+        boolean temp = outputFile.exists();
+        byte[] bytes = new byte[(int) outputFile.length()];
+        try {
+            //EditText editText = (EditText)(findViewById(R.id.editText));
+            socket = new Socket(hostname, portnumber);
+
+            String fileName = outputFile.getName();
+            byte[] fileNameBytes = fileName.getBytes();
+
+            Byte[] fileNameBytesWrapper = new Byte[fileNameBytes.length]; // TODO check if works :
+            int i = 0;
+            for (byte b: fileNameBytes)
+                fileNameBytesWrapper[i++] = b; // TODO .
+
+            Long fileSize = outputFile.length(); // TODO check new variable type
+            OutputStream os = socket.getOutputStream();//tcp stream
+            writeSizeToStream(os, null, fileNameBytesWrapper);
+            os.write(fileNameBytes);
+
+                    /*BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
+                    bw.write(fileName);
+                    bw.newLine();
+                    bw.flush();*/
+
+            // void writeSizeToStream(InputStream stream, long size); // convert size to 8 bytes array and write it to stream.
+
+            // void writeStringToStream(InputStream stream, String string); // write 8 bytes long string size to stream. Afterwards write bytes from string.
+
+            writeSizeToStream(os, fileSize, null);
+
+
+            FileInputStream fis = new FileInputStream(outputFile);//new stream to read FROM file
+            int numBytesRead = fis.read(bytes);//reads from file byte by byte to byreArray
+            if (numBytesRead != fileSize) {
+                System.out.println("Wrong number of bytes has been read");
+                exit(1);
+            }
+            os.write(bytes);//writes bytes into stream
+            os.flush();
+
+            InputStream is = socket.getInputStream();
+
+            try {
+                int a = is.read();
+            }
+            catch(Throwable ignored) {
+            }
+
+            socket.shutdownOutput();
+
+            fis.close();
+            os.close();
+
+            socket.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static synchronized Model getModelInstance() {
         if (modelInstance == null)
@@ -68,72 +136,14 @@ public final class Model {
     }
 
     // TODO why FINAL String realPath, hostname?
+    // TODO sendFilePackets is a stub method, maybe delete?!
     public void sendFilePackets(final String realPath, final String hostname) {
-        new Thread() {
+/*        new Thread() {
             @Override
-            public void run() {
-                //File outputFile = new File(Environment.getExternalStorageDirectory() + "/1.txt"); //TODO why doesn't work?
-                File outputFile = new File(realPath); // /storage/sdcard1/123.txt
-                boolean temp = outputFile.exists();
-                byte[] bytes = new byte[(int) outputFile.length()];
-                try {
-                    //EditText editText = (EditText)(findViewById(R.id.editText));
-                    socket = new Socket(hostname, portnumber);
-
-                    String fileName = outputFile.getName();
-                    byte[] fileNameBytes = fileName.getBytes();
-
-                    Byte[] fileNameBytesWrapper = new Byte[fileNameBytes.length]; // TODO check if works :
-                    int i = 0;
-                    for (byte b: fileNameBytes)
-                        fileNameBytesWrapper[i++] = b; // TODO .
-
-                    Long fileSize = outputFile.length(); // TODO check new variable type
-                    OutputStream os = socket.getOutputStream();//tcp stream
-                    writeSizeToStream(os, null, fileNameBytesWrapper);
-                    os.write(fileNameBytes);
-
-                    /*BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os));
-                    bw.write(fileName);
-                    bw.newLine();
-                    bw.flush();*/
-
-                    // void writeSizeToStream(InputStream stream, long size); // convert size to 8 bytes array and write it to stream.
-
-                    // void writeStringToStream(InputStream stream, String string); // write 8 bytes long string size to stream. Afterwards write bytes from string.
-
-                    writeSizeToStream(os, fileSize, null);
-
-
-                    FileInputStream fis = new FileInputStream(outputFile);//new stream to read FROM file
-                    int numBytesRead = fis.read(bytes);//reads from file byte by byte to byreArray
-                    if (numBytesRead != fileSize) {
-                        System.out.println("Wrong number of bytes has been read");
-                        exit(1);
-                    }
-                    os.write(bytes);//writes bytes into stream
-                    os.flush();
-
-                    InputStream is = socket.getInputStream();
-
-                    try {
-                        int a = is.read();
-                    }
-                    catch(Throwable ignored) {
-                    }
-
-                    socket.shutdownOutput();
-
-                    fis.close();
-                    os.close();
-
-                    socket.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+            public void run() {*/
+            doInBackground(realPath, hostname);
+/*            }
+        }.start();*/
     }
 
     private void writeSizeToStream(OutputStream stream, Long size, Byte[] fileNameBytesWrapper) throws IOException {
@@ -221,7 +231,18 @@ public final class Model {
         return fileContentsList;
     }
 
-    public String handleDirectoryChoice(String inputString) {
-        return inputString;
+    public String synchronizeFolder(String directoryPath) {
+        File dir = new File(directoryPath);
+        /*TODO Handle the case where dir is not really a directory.
+            Checking dir.isDirectory() would not be sufficient
+            to avoid race conditions with another process that deletes
+            directories.*/
+        File[] directoryFilesListing = dir.listFiles();
+        if (directoryFilesListing != null) {
+            for (File curFile : directoryFilesListing) {
+                sendFilePackets(curFile.toString(), "192.168.0.103");
+            }
+        }
+        return directoryPath;
     }
 }

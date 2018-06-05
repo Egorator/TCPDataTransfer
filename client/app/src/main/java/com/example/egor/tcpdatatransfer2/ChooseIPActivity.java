@@ -2,6 +2,7 @@ package com.example.egor.tcpdatatransfer2;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -79,7 +80,12 @@ public class ChooseIPActivity extends AppCompatActivity {
                     // Get the path
                     final String realPath = model.getRealPathFromURI(this, uri);
                     System.out.println("Real path: " + realPath);
-                    model.sendFilePackets(realPath, userInput);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            model.sendFilePackets(realPath, userInput);
+                        }
+                    }.start();
                 }
                 break;
         }

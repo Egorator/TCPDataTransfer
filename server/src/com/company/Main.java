@@ -14,7 +14,7 @@ public class Main {
         if (tempFile.exists())
             System.out.println("Before Format : " + tempFile.lastModified());
 
-        //while(true) {
+        while(true) {
         ServerSocket serverSocket = null;
         try {
 
@@ -82,7 +82,7 @@ public class Main {
             e.printStackTrace();
         }
         }
-    //}
+    }
 
     private static long readSizeFromStream(InputStream stream) {  //TODO why should is be static?
         ByteBuffer sizeBuffer = ByteBuffer.allocate(Long.BYTES);

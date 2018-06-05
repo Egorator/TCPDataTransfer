@@ -1,46 +1,16 @@
 package com.example.egor.tcpdatatransfer2;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.Socket;
-import java.nio.ByteBuffer;
 
 
 import net.rdrei.android.dirchooser.DirectoryChooserActivity;
 import net.rdrei.android.dirchooser.DirectoryChooserConfig;
 
 import android.widget.TextView;
-
-import static java.lang.System.exit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,12 +101,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // TODO Intent data is now final, check if it won't affect anything!!!
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_DIRECTORY) {
             if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-                String a = model.handleDirectoryChoice(data
-                        .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR));
+                new Thread() {
+                    @Override
+                    public void run() {
+                        model.synchronizeFolder(data
+                                .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR));
+                    }
+                }.start();
             } else {
                 // Nothing selected
             }
